@@ -19,4 +19,5 @@ hello,welcome,greeting 연결
 >spring boot 쇼핑몰
 ## sboard1
 >spring 응용
+>http://13.125.27.183:8081/sboard1/   
 
