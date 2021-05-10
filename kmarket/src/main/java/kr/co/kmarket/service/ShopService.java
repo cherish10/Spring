@@ -43,4 +43,8 @@ public class ShopService {
 	public int deleteCart(int[] cartSeqs) {
 		return dao.deleteCart(cartSeqs);
 	}
+	
+	public int insertOrder(int[] cartSeqs) {
+		return dao.insertOrder(cartSeqs);
+	}
 }
