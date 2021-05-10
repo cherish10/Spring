@@ -37,5 +37,6 @@ public class MemberVo {
 	private String etc5;
 	
 	//추가 필드
-	private String result;  
+	private String result; 
+	private String pass1;
 }

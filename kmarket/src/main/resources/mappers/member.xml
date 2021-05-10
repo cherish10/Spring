@@ -3,7 +3,7 @@
 <mapper namespace="kr.co.kmarket.dao.MemberDao">
 	<insert id="insertMember">
 		INSERT INTO `km_member`(`uid`, `pass`, `name`, `gender`, `email`, `hp`, `zip`, `addr1`, `addr2`) 
-		VALUES (#{uid}, PASSWORD(#{pass}), #{name}, #{gender}, #{email}, #{hp}, #{zip}, #{addr1}, #{addr2});
+		VALUES (#{uid}, PASSWORD(#{pass1}), #{name}, #{gender}, #{email}, #{hp}, #{zip}, #{addr1}, #{addr2});
 	</insert>
 	<select id="selectMember"  resultType="kr.co.kmarket.vo.MemberVo">
 		SELECT * FROM `km_member` WHERE `uid`=#{uid} AND `pass`=PASSWORD(#{pass});
