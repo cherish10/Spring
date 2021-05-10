@@ -23,4 +23,5 @@ public class OrderVo {
 	private int cate1;
 	private int cate2;
 	private String thumb1;
+	private int codes[];
 }

@@ -2,10 +2,12 @@ package kr.co.kmarket.dao;
 
 import java.util.List;
 
+
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.kmarket.vo.CartVo;
 import kr.co.kmarket.vo.Cate1Vo;
+import kr.co.kmarket.vo.OrderDetailVo;
 import kr.co.kmarket.vo.OrderVo;
 import kr.co.kmarket.vo.ProductVo;
 
@@ -22,5 +24,7 @@ public interface ShopDao {
 	public int deleteCart(int[] cartSeqs);
 	
 	public int insertOrder(OrderVo vo);
+	public int insertOrderDetail(int orderId, int code);
+	
 	public List<OrderVo> selectOrder(String uid);
 }
