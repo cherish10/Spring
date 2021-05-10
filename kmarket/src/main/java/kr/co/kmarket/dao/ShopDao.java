@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.kmarket.vo.CartVo;
 import kr.co.kmarket.vo.Cate1Vo;
+import kr.co.kmarket.vo.OrderVo;
 import kr.co.kmarket.vo.ProductVo;
 
 @ResponseBody
@@ -21,4 +22,5 @@ public interface ShopDao {
 	public int deleteCart(int[] cartSeqs);
 	
 	public int insertOrder(int[] cartSeqs);
+	public List<OrderVo> selectOrder(String uid);
 }
