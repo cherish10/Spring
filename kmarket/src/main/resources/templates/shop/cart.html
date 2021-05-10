@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html  xmlns:th="http://www.thymeleaf.org">
 <th:block th:include="@{_header.html}"></th:block>
-<script>
+<script th:inline="javascript">
 
 	aggregateProduct();
 
@@ -58,7 +58,7 @@
 				
 				var delivery = $(this).text().replace(/%/g,'');
 				if(delivery != '무료배송'){
-					totDeliveryt += parseInt(delivery);
+					totDelivery += parseInt(delivery);
 				}
 				
 			});
@@ -80,12 +80,11 @@
 			var tagTotal = checkedProduct.find('.total');
 			var totTotal = 0;
 			
-			$.each(tagTotal, function(){
-				
+			$.each(tagTotal, function(){				
 				var total = $(this).text().replace(/,/g, '');							
-				totTotal += parseInt(total);					
-				
+				totTotal += parseInt(total);							
 			});
+			
 			$('.info tr:nth-child(6) > td:nth-child(2)').text(totTotal.toLocaleString());
 			
 		});
@@ -130,19 +129,19 @@
 			var checkedProducts = $('.product_check:checked');
 			var cartSeqs = [];
 			
-			checkedProducts.each(function(i, product){
-				cartSeqs.push(product.value);
+			checkedProducts.each(function(i, product){				
+				cartSeqs.push(product.value);				
 			});
 			
-			var params = {'cartSeqs': cartSeqs};
-			
+			var params = {"cartSeqs": cartSeqs};
+	
 			$.ajax({
-				url:'/kmarket/shop/cartRemove',
+				url: '/kmarket/shop/cartRemove',				
 				type: 'get',
 				traditional: true,
 				data: params,
-				dataType :'json',
-				success: function(data){  // <- data삭제 갯수
+				dataType: 'json',
+				success: function(data){
 					// DB 삭제 후 화면삭제 진행
 					//alert("삭제 갯수 : "+data.result);
 					
@@ -154,12 +153,10 @@
 					inputCheck.parent().parent().remove();
 					
 					// 집계 초기화
-					aggregateProduct();  
+					aggregateProduct();
 				}
 			});
-			
 		});
-		
 	}); // 삭제하기 끝
 	
 	//주문하기
@@ -167,14 +164,21 @@
 		
 		$('input[name=order]').click(function(){
 			
-			var checkedProducts = $('.product_check:checked');
-			var cartSeqs = [];
+			var uid		 = [[${session.smember.uid}]];
+			var count 	 = $('.info .count').text().replace(/,/g,'');
+			var price	 = $('.info .price').text().replace(/,/g,'');
+			var discount = $('.info .discount').text().replace(/,/g,'');
+			var delivery = $('.info .delivery').text().replace(/,/g,'');
+			var point 	 = $('.info .point').text().replace(/,/g,'');
+			var total	 = $('.info .total').text().replace(/,/g,'');
 			
-			checkedProducts.each(function(i, product){				
-				cartSeqs.push(product.value);				
-			});
-			
-			var params = {"cartSeqs": cartSeqs};
+			var params = { "uid":uid,
+						   "count":count,
+						   "price":price,
+						   "discount":discount,
+						   "delivery":delivery,
+						   "point":point,
+						   "total":total};
 			
 			$.ajax({
 				url: '/kmarket/shop/order',
@@ -258,27 +262,27 @@
         <table border="0">
           <tr>
             <td>상품수</td>
-            <td>0</td>
+            <td class="count">0</td>
           </tr>
           <tr>
             <td>상품금액</td>
-            <td>0</td>
+            <td class="price">0</td>
           </tr>
           <tr>
             <td>할인금액</td>
-            <td>0</td>
+            <td class="discount">0</td>
           </tr>
           <tr>
             <td>배송비</td>
-            <td>0</td>
+            <td class="delivery">0</td>
           </tr>              
           <tr>
             <td>포인트</td>
-            <td>0</td>
+            <td class="point">0</td>
           </tr>
           <tr>
             <td>전체주문금액</td>
-            <td>0</td>
+            <td class="total">0</td>
           </tr>
         </table>
         <input type="button" name="order" value="주문하기">
