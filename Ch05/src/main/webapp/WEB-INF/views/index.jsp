@@ -9,13 +9,13 @@
 	<h3>Spring Mybatis 실습하기</h3>
 	
 	<p>
-		<a href="/ch05/user/register">User 등록하기</a>
-		<a href="/ch05/user/list">User 목록</a>
+		<a href="/Ch05/user/register">User 등록하기</a>
+		<a href="/Ch05/user/list">User 목록</a>
 	</p>
 	
 	<p>
-		<a href="/ch05/member/register">Member 등록하기</a>
-		<a href="/ch05/member/list">Member 목록</a>
+		<a href="/Ch05/member/register">Member 등록하기</a>
+		<a href="/Ch05/member/list">Member 목록</a>
 	</p>	
 </body>
 </html>

@@ -27,8 +27,8 @@
 				<td>${member.dep}</td>
 				<td>${member.rdate}</td>
 				<td>
-					<a href="/ch05/member/modify?uid=${member.uid}">수정</a>
-					<a href="/ch05/member/delete?uid=${member.uid}">삭제</a>
+					<a href="/Ch05/member/modify?uid=${member.uid}">수정</a>
+					<a href="/Ch05/member/delete?uid=${member.uid}">삭제</a>
 				</td>
 			</tr>
 		</c:forEach>

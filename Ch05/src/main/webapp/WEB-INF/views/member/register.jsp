@@ -7,8 +7,8 @@
 </head>
 <body>
 	<h3>Member 등록</h3>
-	<a href="/ch05">처음으로</a>
-	<form action="/ch05/member/register" method="post">
+	<a href="/Ch05">처음으로</a>
+	<form action="/Ch05/member/register" method="post">
 		<table border="1">
 			<tr>
 				<td>아이디</td>
