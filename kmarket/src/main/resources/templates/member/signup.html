@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:include="@{member/_header_member.html}"></th:block>
+<script>
+$(function(){
+	
+	$('input.agree').click(function(){
+	
+		//alert('sadfasdf');
+		location.href='/kmarket/member/register';	
+		
+	});	
+	
+});
+</script>
   		<div id="member-signup">
 				<h1>약관동의</h1>
 				<section>

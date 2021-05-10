@@ -74,6 +74,11 @@ public class MemberController {
 	public String register() {
 		return "/member/register";
 	}
+	@PostMapping("/member/register")
+	public String register(MemberVo vo) {
+		service.insertMember(vo);
+		return "redirect:/member/login";
+	}
 	
 	@GetMapping("/member/register-seller")
 	public String registerSeller() {

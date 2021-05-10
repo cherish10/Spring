@@ -12,6 +12,10 @@ public class MemberService {
 	@Autowired
 	private MemberDao dao;
 	
+	public void insertMember(MemberVo vo) {
+		dao.insertMember(vo);
+	}
+	
 	public MemberVo selectMember(MemberVo vo) {
 		return dao.selectMember(vo);
 	}

@@ -6,6 +6,8 @@ import kr.co.kmarket.vo.MemberVo;
 
 @Repository
 public interface MemberDao {
+	
+	public void insertMember(MemberVo vo);
 
 	public MemberVo selectMember(MemberVo vo);
 }
