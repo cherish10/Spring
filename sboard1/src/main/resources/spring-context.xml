@@ -27,9 +27,9 @@
 	<!-- 데이터베이스 설정 -->
 	<bean id="basicDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql://13.125.27.183:3306/lhj"></property>
+		<property name="url" value="jdbc:mysql://13.125.27.183:3306/lhj?useUnicode=true&amp;characterEncoding=utf8"></property>
 		<property name="username" value="lhj"></property>
-		<property name="password" value="asqw1212!"></property>		
+		<property name="password" value="1234"></property>		
 	</bean>
 	
 	<!-- JDBC 설정 -->

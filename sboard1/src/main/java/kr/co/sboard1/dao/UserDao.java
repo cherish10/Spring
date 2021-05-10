@@ -13,7 +13,9 @@ public class UserDao {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 	
-	public void insertUser() {}
+	public void insertUser(UserVo vo) {
+		mybatis.insert("mapper.user.INSERT_USER", vo);
+	}
 	
 	public TermsVo selectTerms() {
 		return	mybatis.selectOne("mapper.user.SELECT_TERMS");

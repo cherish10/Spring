@@ -52,5 +52,14 @@ public class UserController {
 		return "/user/terms";
 	}
 	
+	@GetMapping("/user/register")
+	public String register() {
+		return "/user/register";
+	}
 	
+	@PostMapping("/user/register")
+	public String register(UserVo vo) {
+		service.insertUser(vo);
+		return "redirect:/list";
+	}
 }

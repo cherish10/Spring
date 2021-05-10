@@ -7,6 +7,7 @@
 										`title`=#{title},
 										`content`=#{content},
 										`uid`=#{uid},
+										`file`=#{file},
 										`regip`=#{regip},
 										`rdate`=NOW();
 	</insert>

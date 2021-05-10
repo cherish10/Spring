@@ -55,7 +55,7 @@ public class BoardController {
 		String regip = req.getRemoteAddr();
 		vo.setRegip(regip);
 		
-		// spring-context.xml ÆÄÀÏ¾÷·Îµå ¼³Á¤ ÇÒ °Í
+		// spring-context.xml íŒŒì¼ì—…ë¡œë“œ ì„¤ì • í•  ê²ƒ
 		MultipartFile file = vo.getFname();
 		
 		if(file.isEmpty()) {
@@ -64,7 +64,7 @@ public class BoardController {
 			vo.setFile(1);
 		}
 		
-		// ±Û insertÇÑ ÈÄ ±Û¹øÈ£¸¦ ¹Ş¾Æ¿È 
+		// ê¸€ insertí•œ í›„ ê¸€ë²ˆí˜¸ë¥¼ ë°›ì•„ì˜´ 
 		int seq = service.insertArticle(vo);
 		
 		FileVo fvo = service.fileUpload(req, file, seq);
@@ -76,13 +76,14 @@ public class BoardController {
 		return "redirect:/list";
 	}
 	
-	public String view() {
-		return "/view";
-	}
-	
 	@GetMapping("/modify")
 	public String modify() {
 		return "/modify";
+	}
+	
+	@GetMapping("/view")
+	public String view() {
+		return "/view";
 	}
 	
 }

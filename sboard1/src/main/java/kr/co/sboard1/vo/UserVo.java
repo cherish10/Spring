@@ -15,6 +15,16 @@ public class UserVo {
 	private String regip;
 	private String rdate;
 	
+	//추가필드
+	private String pass1;
+	
+	public String getPass1() {
+		return pass1;
+	}
+	public void setPass1(String pass1) {
+		this.pass1 = pass1;
+	}
+	
 	public String getUid() {
 		return uid;
 	}

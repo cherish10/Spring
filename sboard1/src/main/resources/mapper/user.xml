@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.user">
 
+	<insert id="INSERT_USER">
+		INSERT INTO `JBOARD_USER` (`uid`, `pass`, `name`, `nick`, `email`, `hp`) 
+		VALUES (#{uid}, PASSWORD(#{pass1}), #{name}, #{nick}, #{email}, #{hp});
+	</insert>
+
 	<select id="SELECT_TERMS" resultType="kr.co.sboard1.vo.TermsVo">
 		SELECT * FROM `JBOARD_TERMS`;
 	</select>

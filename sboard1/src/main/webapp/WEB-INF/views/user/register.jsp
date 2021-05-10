@@ -9,26 +9,26 @@
 <body>
     <div id="wrapper">
         <section id="user" class="register">
-            <form action="#" method="POST">
+            <form action="/sboard1/user/register" method="POST">
                 <table border="1">
                     <caption>사이트 이용정보 입력</caption>
                     <tr>
                         <td>아이디</td>
                         <td>
-                            <input type="text" name="uid" placeholder="아이디 입력"/>
+                            <input type="text" name="uid" placeholder="아이디 입력" required/>
                             <span class="resultId"></span>
                         </td>
                     </tr>
                     <tr>
                         <td>비밀번호</td>
                         <td>
-                            <input type="password" name="pass1" placeholder="비밀번호 입력"/>                            
+                            <input type="password" name="pass1" placeholder="비밀번호 입력" required/>                            
                         </td>
                     </tr>
                     <tr>
                         <td>비밀번호 확인</td>
                         <td>
-                            <input type="password" name="pass2" placeholder="비밀번호 확인 입력"/>
+                            <input type="password" name="pass2" placeholder="비밀번호 확인 입력" required/>
                             <span class="resultPass"></span>
                         </td>
                     </tr>
@@ -38,27 +38,27 @@
                     <tr>
                         <td>이름</td>
                         <td>
-                            <input type="text" name="name" placeholder="이름 입력"/>                            
+                            <input type="text" name="name" placeholder="이름 입력" required/>                            
                         </td>
                     </tr>
                     <tr>
                         <td>별명</td>
                         <td>
                             <p>공백없이 한글, 영문, 숫자만 입력가능</p>
-                            <input type="text" name="nick" placeholder="별명 입력"/>
+                            <input type="text" name="nick" placeholder="별명 입력" required/>
                             <span class="resultNick"></span>                            
                         </td>
                     </tr>
                     <tr>
                         <td>E-Mail</td>
                         <td>
-                            <input type="email" name="email" placeholder="이메일 입력"/>
+                            <input type="email" name="email" placeholder="이메일 입력" required/>
                         </td>
                     </tr>
                     <tr>
                         <td>휴대폰</td>
                         <td>
-                            <input type="text" name="hp" placeholder="- 포함 13자리 입력" minlength="13" maxlength="13" />
+                            <input type="text" name="hp" placeholder="- 포함 13자리 입력" minlength="13" maxlength="13" required/>
                         </td>
                     </tr>
                     <tr>
@@ -79,7 +79,7 @@
                 </table>
 
                 <div>
-                    <a href="./login.html" class="btnCancel">취소</a>
+                    <a href="/sboard1/user/login" class="btnCancel">취소</a>
                     <input type="submit"   class="btnJoin" value="회원가입"/>
                 </div>
 

@@ -13,7 +13,9 @@ public class UserService {
 	@Autowired
 	private UserDao dao;
 	
-	public void insertUser() {}
+	public void insertUser(UserVo vo) {
+		dao.insertUser(vo);
+	}
 	
 	public TermsVo selectTerms() {
 		return dao.selectTerms();
