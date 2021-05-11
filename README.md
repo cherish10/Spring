@@ -16,9 +16,9 @@ hello,welcome,greeting 연결
 ## Ch08
 >http://13.125.27.183:8081/Ch08/
 ##  kmarket
->spring boot 쇼핑몰
+>spring boot 쇼핑몰(로그인 및 회원가입 주문하기)   
 ## sboard1
 >spring 응용   
->로그인및회원가입 후 게시판
+>로그인및회원가입 후 게시판 글쓰기   
 >http://13.125.27.183:8081/sboard1/   
 
