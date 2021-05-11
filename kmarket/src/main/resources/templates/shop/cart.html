@@ -197,8 +197,8 @@
 				traditional: true,
 				data: params,
 				dataType: 'json',
-				success: function(data){
-					location.href='/kmarket/shop/order';	
+				success: function(data){ //<-{`orderId`:1}
+					location.href='/kmarket/shop/order?orderId='+data.orderId;	
 				}
 			});						
 			

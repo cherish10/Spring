@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class OrderVo {
 
-	private int OrderId;
+	private int orderId;
 	private String uid;
 	private int count;
 	private int price;
@@ -15,13 +15,27 @@ public class OrderVo {
 	private int point;
 	private int delivery;
 	private int total;
+	private String orderer;
+	private String hp;
+	private String zip;
+	private String addr1;
+	private String addr2;
 	private int payment;
 	private int complete;
 	private String rdate;
-	
-	//추가필드
+	private String completeDate;
+		
+	// 추가필드 I
 	private int cate1;
 	private int cate2;
 	private String thumb1;
 	private int codes[];
+	
+	// 추가필드 II
+	private String pName;
+	private int pPrice;
+	private int pDiscount;
+	private int pPoint;
+	private int pDelivery;
+	private int pTotal;
 }

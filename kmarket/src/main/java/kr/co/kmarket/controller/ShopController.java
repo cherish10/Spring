@@ -116,14 +116,16 @@ public class ShopController {
 	}
 	
 	@GetMapping("/shop/order")
-	public String order(HttpSession sess, Model model) {
+	public String order(HttpSession sess, Model model, int orderId) {
 		
 		MemberVo member = (MemberVo)sess.getAttribute("smember");
-		//String uid = member.getUid();
+		String uid = member.getUid();
 		
-		//List<OrderVo> orders = service.selectOrder(uid);
-		//model.addAttribute("orders", orders);
+		List<OrderVo> products = service.selectOrder(uid, orderId);
+		
 		model.addAttribute("member", member);
+		model.addAttribute("products", products);
+		model.addAttribute("infoData", products.get(0));
 		
 		return "/shop/order";
 	}
@@ -132,20 +134,27 @@ public class ShopController {
 	@PostMapping("/shop/order")
 	public String order(OrderVo vo) {
 		
-		int orderId = service.insertOrder(vo);
+		service.insertOrder(vo);
+		
+		// 방금 INSERT한 orderId값을 구한다.
+		int orderId = vo.getOrderId();
 		
 		for(int code : vo.getCodes()) {
 			service.insertOrderDetail(orderId, code);
 		}
 		
 		JsonObject json = new JsonObject();
-		json.addProperty("result", orderId);
+		json.addProperty("orderId", orderId);
 		
 		return new Gson().toJson(json);
 	}
 	
 	@GetMapping("/shop/order-complete")
 	public String orderComplete() {
+		return "/shop/order-complete";
+	}
+	@PostMapping("/shop/order-complete")
+	public String orderComplete(OrderVo vo) {
 		return "/shop/order-complete";
 	}
 }

@@ -1,143 +1,190 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:include="@{_header.html}"/>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-	// 최초 집계 실행
-	aggregateProduct();
+function execPostCode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+           // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-	function aggregateProduct() {	
-		//전체합계 집계
-		$(function(){
-			
-			//var checkedProduct = $('.product_check:checked').parent().parent();
-								
-			// 상품 수 집계
-			var tagCount = $('.order > .count');
-			var totCount = 0;
-			
-			$.each(tagCount, function(){
-				var count = parseInt($(this).text());
-				totCount += count;
-			});
-			
-			$('.info tr:nth-child(1) > td:nth-child(2)').text(totCount);
-			
-			// 판매가 집계
-			var tagPrice = $('.order > .price');
-			var totPrice = 0;
-			
-			$.each(tagPrice, function(){
-				var price = parseInt($(this).text().replace(/,/g, ''));					
-				totPrice += price;
-			});
-			
-			$('.info tr:nth-child(2) > td:nth-child(2)').text(totPrice.toLocaleString());
-			
-			// 할인금액 집계
-			var tagDiscount = $('.order > .discount');
-			var totDiscount = 0;
-			
-			$.each(tagDiscount, function(){
-				
-				var discount = $(this).text().replace(/%/g, '')
-				
-				if(discount != '-'){
-					var price = $(this).prev().text().replace(/,/g, '');
-					totDiscount += parseInt(price * discount / 100);
-				}								
-			});
-			
-			$('.info tr:nth-child(3) > td:nth-child(2)').text(totDiscount.toLocaleString());
-			
-			// 배송비 집계
-			var tagDelivery = $('.order > .delivery');
-			var totDelivery = 0;
-			
-			$.each(tagDelivery, function(){
-				
-				var delivery = $(this).text().replace(/,/g, '');
-				
-				if(delivery != '무료배송'){				
-					totDelivery += parseInt(delivery);
-				}
-			});
-			
-			$('.info tr:nth-child(4) > td:nth-child(2)').text(totDelivery.toLocaleString());
-			
-			
-			// 전체주문금액(소계) 집계
-			var tagTotal = $('.order > .total');
-			var totTotal = 0;
-			
-			$.each(tagTotal, function(){				
-				var total = $(this).text().replace(/,/g, '');							
-				totTotal += parseInt(total);							
-			});
-			
-			$('.info tr:nth-child(6) > td:nth-child(2)').text(totTotal.toLocaleString());
-			
-		});
-		
-	} // aggregateProduct function end	
+           // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+           // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+           var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+           var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+
+           // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+           // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+           if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+               extraRoadAddr += data.bname;
+           }
+           // 건물명이 있고, 공동주택일 경우 추가한다.
+           if(data.buildingName !== '' && data.apartment === 'Y'){
+              extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+           }
+           // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+           if(extraRoadAddr !== ''){
+               extraRoadAddr = ' (' + extraRoadAddr + ')';
+           }
+           // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+           if(fullRoadAddr !== ''){
+               fullRoadAddr += extraRoadAddr;
+           }
+
+           // 우편번호와 주소 정보를 해당 필드에 넣는다.
+           console.log(data.zonecode);
+           console.log(fullRoadAddr);
+           
+           
+           $("[name=zip]").val(data.zonecode);
+           $("[name=addr1]").val(fullRoadAddr);
+           
+           /* document.getElementById('signUpUserPostNo').value = data.zonecode; //5자리 새우편번호 사용
+           document.getElementById('signUpUserCompanyAddress').value = fullRoadAddr;
+           document.getElementById('signUpUserCompanyAddressDetail').value = data.jibunAddress; */
+       }
+    }).open();
+} // 주소입력 끝
+
+$(function(){
 	
+	// 포인트 할인적용
+	$('input[name=pointBtn]').click(function(){
+		
+		var applyPoint   = Number($('input[name=point]').val());
+		
+		if(applyPoint > 0){
+		
+			var currentPoint = Number($('.currentPoint').text().replace(/,/g, ''));
+			var finalTotal   = Number($('.final').text().replace(/,/g, ''));
+			
+			currentPoint -= applyPoint; 
+			finalTotal -= applyPoint;
+			
+			$('.currentPoint').text(currentPoint.toLocaleString())
+			$('.pointDiscount').text(applyPoint.toLocaleString())
+			$('.final').text(finalTotal.toLocaleString());
+			$('input[name=point]').val(0);
+		}else{
+			alert('적용할 포인트를 입력하세요.');
+		}
+		
+	}); // 포인트 할인 적용 끝
+	
+	// 최종 주문하기
+	$('input[name=finalOrder]').click(function(){
+		var orderId  = $('input[name=orderId]').val();
+		var orderer  = $('input[name=orderer]').val();
+		var hp      = $('input[name=hp]').val();
+		var zip     = $('input[name=zip]').val();
+		var addr1   = $('input[name=addr1]').val();
+		var addr2   = $('input[name=addr2]').val();
+		var payment = $('input[name=payment]').val();
+		var pointDiscount = $('.pointDiscount').text().replace(/,/g, '');
+		
+		var params = {
+			'orderId': orderId,
+			'orderer': orderer,
+			'hp': hp,
+			'zip': zip,
+			'addr1': addr1,
+			'addr2': addr2,
+			'payment': payment,
+			'pointDiscount': pointDiscount
+		};						
+		
+		$.ajax({
+			url: '/kmarket/shop/order-complete',
+			type: 'post',
+			data: params,
+			dataType: 'json',
+			success: function(data){
+				alert('주문완료!');
+			}
+		});
+	});// 최종 주문하기 끝
+	
+	
+	
+	
+});
+
 </script>
 <main>
-    <th:block th:include="@{_category.html}"/>
+<th:block th:include="@{_category.html}"/>
 
-    <!-- 주문결제 -->
-    <section id="order">
-      
-      <!-- 제목, 페이지 네비게이션 -->
-      <nav>
-        <h1>주문결제</h1>
-        <p>
-          HOME > 장바구니 > <strong>주문결제</strong>
-        </p>
-      </nav>
-      <section>
-        <form action="#">
-            <div class="product">
-                <table>
-                    <thead>
-                      <tr>
-                        <th>상품명</th>
-		                <th>총수량</th>
-		                <th>판매가</th>
-		                <th>할인</th>
-		                <th>포인트</th>
-		                <th>배송비</th>
-		                <th>소계</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="empty">
-                        <td colspan="7">장바구니에 상품이 없습니다.</td>
-                      </tr>
-                      
-                    </tbody>
-                  </table>                      
-            </div>
-            
-            <section>
-                <article class="delivery">
-                  <h1>배송정보</h1>                          
-                  <table>
-                    <tr>
-                      <td>주문자</td>
-                      <td><input type="text" name="orderer" th:value="${member.name}" /></td>
-                    </tr>
-                    <tr>
-                      <td>휴대폰</td>
-                      <td>
-                        <input type="text" name="hp" th:value="${member.hp}"/>
-                        <span>- 포함 입력</span>
-                      </td>
-                    </tr>
+<!-- 주문결제 -->
+<section id="order">
+  
+  <!-- 제목, 페이지 네비게이션 -->
+  <nav>
+    <h1>주문결제</h1>
+    <p>
+      HOME > 장바구니 > <strong>주문결제</strong>
+    </p>
+  </nav>
+  <section>
+    <form action="#">
+        <div class="product">
+            <table>
+                <thead>
+                  <tr>
+                    <th>상품명</th>
+	                <th>총수량</th>
+	                <th>판매가</th>
+	                <th>할인</th>
+	                <th>포인트</th>
+	                <th>배송비</th>
+	                <th>소계</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="empty">
+                    <td colspan="7">장바구니에 상품이 없습니다.</td>
+                  </tr>
+                  <tr th:each="product:${products}">		                
+	                <td>
+	                  <article>
+	                    <a href="#"><img th:src="@{/thumb/{code1}/{code2}/{img}(code1=${product.cate1}, code2=${product.cate2}, img=${product.thumb1})}" alt=""></a>
+	                    <div>
+	                      <h2><a href="#">[[${product.pName}]]</a></h2>
+	                      <p></p>
+	                    </div>
+	                  </article>
+	                </td>
+	                <td class="count">1</td>
+	                <td class="price">[[${#numbers.formatInteger(product.pPrice, 3, 'COMMA')}]]</td>
+	                <td class="discount" th:if="${product.pDiscount} > 0">[[${product.pDiscount}]]%</td>
+	                <td class="discount" th:unless="${product.pDiscount} > 0">-</td>
+	                <td class="point">[[${product.pPoint}]]</td>
+	                <td class="delivery" th:if="${product.pDelivery} == 0">무료배송</td>
+	                <td class="delivery" th:unless="${product.pDelivery} == 0">[[${#numbers.formatInteger(product.pDelivery, 3, 'COMMA')}]]</td>
+	                <td class="total">[[${#numbers.formatInteger(product.pTotal, 3, 'COMMA')}]]</td>
+	              </tr>
+                </tbody>
+              </table>                      
+        </div>
+        
+        <section>
+            <article class="delivery">
+              <h1>배송정보</h1>                          
+              <table>
+                <tr>
+                  <td>주문자</td>
+                  <td><input type="text" name="orderer" th:value="${member.name}" /></td>
+                </tr>
+                <tr>
+                  <td>휴대폰</td>
+                  <td>
+                    <input type="text" name="hp" th:value="${member.hp}"/>
+                    <span>- 포함 입력</span>
+                  </td>
+                </tr>
                     <tr>
                       <td>우편번호</td>
                       <td>
                         <input type="text" name="zip" th:value="${member.zip}"/>
-                        <input type="button" value="검색"/>
+                        <input type="button" value="검색"  onclick="execPostCode();" />
                       </td>
                     </tr>
                     <tr>
@@ -157,12 +204,11 @@
 
                 <article class="discount">
                     <h1>할인정보</h1>
-
                     <div>
-                        <p>현재 포인트 : <span>[[${member.point}]]</span>점</p>
+                        <p>현재 포인트 : <span class="currentPoint">[[${member.point}]]</span>점</p>
                         <label>
-                            <input type="text" name="point" />점
-                            <input type="button" value="적용"/>
+                            <input type="text" name="point" value="0"/>점
+                            <input type="button" name="pointBtn" value="적용"/>
                         </label>
                         <span>포인트 5,000점 이상이면 현금처럼 사용 가능합니다.</span>
                     </div>
@@ -206,34 +252,35 @@
 
                 <div class="info">
                     <h2>최종결제 정보</h2>
+                    <input type="hidden" name="orderId" th:value="${infoData.orderId}"/>
                     <table border="0">
                       <tr>
                         <td>총</td>
-                        <td>0</td>
+                        <td>[[${infoData.count}]]</td>
                       </tr>
                       <tr>
                         <td>상품금액</td>
-                        <td>0</td>
+                        <td>[[${#numbers.formatInteger(infoData.price, 3, 'COMMA')}]]</td>
                       </tr>
                       <tr>
                         <td>할인금액</td>
-                        <td>0</td>
+                        <td>[[${#numbers.formatInteger(infoData.discount, 3, 'COMMA')}]]</td>
                       </tr>
                       <tr>
                         <td>배송비</td>
-                        <td>0</td>
+                        <td>[[${#numbers.formatInteger(infoData.delivery, 3, 'COMMA')}]]</td>
                       </tr>
                       <tr>
                         <td>포인트 할인</td>
-                        <td>0</td>
+                        <td class="pointDiscount">0</td>
                       </tr>
                       <tr>
                         <td>전체주문금액</td>
-                        <td>0</td>
+                        <td class="final">[[${#numbers.formatInteger(infoData.total, 3, 'COMMA')}]]</td>
                       </tr>
                       
                     </table>
-                    <input type="button" name="" value="결제하기">
+                    <input type="button" name="finalOrder" value="결제하기"/>
         
                   </div>
             </section>                
@@ -242,4 +289,5 @@
     </section>
 </main>
 <th:block th:include="@{_footer.html}"/>        
+</html>      
 </html>
