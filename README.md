@@ -17,6 +17,7 @@ hello,welcome,greeting 연결
 >http://13.125.27.183:8081/Ch08/
 ##  kmarket
 >spring boot 쇼핑몰(로그인 및 회원가입 장바구니 주문하기)   
+>kmarket 용량이 커서 톰캣서버가 버거워함 안들어가지면 주소창에 kmarket 빼고 치다가 다시 Kmarket 처보기!   
 >http://13.125.27.183:8081/kmarket/   
 ## sboard1
 >spring 응용   
